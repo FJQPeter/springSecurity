@@ -1,13 +1,16 @@
 package imook.sso;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.implicit.InMemoryImplicitGrantService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -18,12 +21,14 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @Configuration
 @EnableAuthorizationServer
 public class SsoAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+    @Autowired private AuthenticationManager authenticationManager;
+    @Autowired private SsoUserDetailsService ssoUserDetailsService;
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("imooc1")
-                .secret("imoocsecrect1")
-                .authorizedGrantTypes("authorization_code","refresh_token")
+                .withClient("wenwen")
+                .secret("love")
+                .authorizedGrantTypes("authorization_code")
                 .accessTokenValiditySeconds(60)
                 .scopes("all")
                 .and()
@@ -33,11 +38,18 @@ public class SsoAuthorizationServerConfig extends AuthorizationServerConfigurerA
                 .scopes("all");
     }
 
+    //AuthorizationServerEndpointsConfigurer：用来配置授权（authorization）以及令牌（token）的访问端点和令牌服务(token services)。
+    //授权是使用 AuthorizationEndpoint 这个端点来进行控制的
+    //如果你不进行设置的话，默认是除了资源所有者密码（password）授权类型以外，支持其余所有标准授权类型的（RFC6749）
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        //authenticationManager：认证管理器，当你选择了资源所有者密码（password）授权类型的时候，请设置这个属性注入一个 AuthenticationManager 对象。
+        //implicitGrantService：这个属性用于设置隐式授权模式，用来管理隐式授权模式的状态。
+//        endpoints.authenticationManager(authenticationManager).userDetailsService(ssoUserDetailsService);
         endpoints.tokenStore(jwtTokenStore()).accessTokenConverter(jwtAccessTokenConverter());
     }
 
+    //AuthorizationServerSecurityConfigurer：用来配置令牌端点(Token Endpoint)的安全约束.
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.tokenKeyAccess("isAuthenticated()"); //springSecurity的授权表达式

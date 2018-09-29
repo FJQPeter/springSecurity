@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -61,9 +62,10 @@ public class UserController {
 		String userId = user.getUsername();
 		providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
 	}
-	
+
+	//如果不想要太多的认证信息，@AuthenticationPrincipal UserDetails userDetails
 	@GetMapping("/me")
-	public Object getCurrentUser(Authentication user, HttpServletRequest request) throws UnsupportedEncodingException {
+	public Object getCurrentUser( Authentication user, HttpServletRequest request) throws UnsupportedEncodingException {
         String header = request.getHeader("Authorization");
         String token = StringUtils.substringAfter(header, "bearer ");
         //验签的时候用的不是UTF-8，得转成字节码

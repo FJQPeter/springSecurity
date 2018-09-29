@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
  * Created by FangYan on 2017/10/29 0029.
  */
 @Component
-@Order(Integer.MAX_VALUE)  //因为他是最大值，在集合最后，会最后读取
+@Order  //因为他默认是最大值，在集合最后，会最后读取
 public class DemoAuthorizeConfigProvider implements AuthorizeConfigProvider {
 
     @Override
     public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
-        config.antMatchers("/oauth/token")
+        config.antMatchers("/demo.html")
                 .hasRole("ADMIN");
-//        config.anyRequest().access("@rbacService.hasPermission(request,authentication)");
+        config.anyRequest().access("@rbacService.hasPermission(request,authentication)");
 
     }
 }

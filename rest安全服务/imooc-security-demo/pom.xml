@@ -11,14 +11,20 @@
 
 	<dependencies>
 
-        <dependency><!--<dependency>
+     <!--   <dependency>
 			<groupId>com.imooc.security</groupId>
 			<artifactId>imooc-security-browser</artifactId>
 			<version>${imooc.security.version}</version>
 		</dependency>-->
+        <dependency>
             <groupId>com.imooc.security</groupId>
             <artifactId>imooc-security-app</artifactId>
             <version>${imooc.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.imooc.security</groupId>
+            <artifactId>imooc-security-authorize</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <!--springboot的测试框架-->

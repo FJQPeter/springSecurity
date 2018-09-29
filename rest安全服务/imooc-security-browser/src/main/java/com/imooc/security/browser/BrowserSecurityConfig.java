@@ -101,7 +101,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 .loginProcessingUrl("/authentication/form")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/imooc-signIn.html")
+                .antMatchers("/imooc-signIn.html","/code/image")
                 .permitAll()
                 .anyRequest().authenticated()
         .and().csrf().disable();
@@ -113,7 +113,6 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 //                .authenticated()
 //                .csrf()   //跨域防御
 //                .disable();
-
 	    authorizeConfigManager.config(http.authorizeRequests());
 	}
 

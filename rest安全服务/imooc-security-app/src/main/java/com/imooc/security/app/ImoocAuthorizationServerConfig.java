@@ -42,7 +42,8 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 
     //配置入口点
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        //一定要配置authenticationManager，否则下面的clients配置无效。
             endpoints.authenticationManager(authenticationManager)
                      .userDetailsService(userDetailsService);
             if(jwtAccessTokenConverter!=null && jwtTokenEnhancer!=null){
@@ -59,6 +60,7 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        //clients存储位置
         InMemoryClientDetailsServiceBuilder builder = clients.inMemory();
         if (ArrayUtils.isNotEmpty(securityProperties.getOAuth2Properties().getClients())) {
             for (OAuth2ClientProperties config : securityProperties.getOAuth2Properties().getClients()) {

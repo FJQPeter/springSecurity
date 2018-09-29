@@ -1,5 +1,6 @@
 package com.imooc.security.app;
 
+import com.imooc.security.core.authorize.AuthorizeConfigManager;
 import com.imooc.security.core.properties.SecurityConstants;
 import com.imooc.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter{
     @Autowired
     protected AuthenticationFailureHandler imoocAuthenticationFailureHandler;
 
+    @Autowired
+    protected AuthorizeConfigManager authorizeConfigManager;
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.formLogin()
@@ -47,5 +51,6 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter{
                 .authenticated() // 对请求进行认证
                 .and()
                 .csrf().disable(); // 关闭csrf验证
+        authorizeConfigManager.config(http.authorizeRequests());
     }
 }

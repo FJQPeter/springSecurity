@@ -1,6 +1,7 @@
 package imook.sso;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * Created by FangYan on 2017/10/29 0029.
  */
+@Configuration
 public class SsoUserDetailsService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;

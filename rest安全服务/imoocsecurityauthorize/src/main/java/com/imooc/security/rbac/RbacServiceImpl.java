@@ -15,6 +15,7 @@ import java.util.Set;
 @Component("rbacService")
 public class RbacServiceImpl implements RbacService {
     private AntPathMatcher antPathMatcher = new AntPathMatcher();
+    //因为配置的url可能是带*号的，所以需要用AntPathMatcher比较。
 
     @Override
     public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
